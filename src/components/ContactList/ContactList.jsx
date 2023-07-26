@@ -1,13 +1,16 @@
 import { useMemo } from 'react';
 import UList from './ContactList.styled';
-import { useDispatch, useSelector } from 'react-redux';
-import { deleteContactThunk } from 'redux/contactSlice/thunk';
-import { getContacts, getFilter } from 'redux/selectors';
+import { getFilter } from 'redux/selectors';
+import {
+  useDeleteContactMutation,
+  useFetchContactsQuery,
+} from 'redux/contactSliceRTK';
+import { useSelector } from 'react-redux';
 
 const ContactList = () => {
-  const contacts = useSelector(getContacts);
   const filter = useSelector(getFilter);
-  const dispatch = useDispatch();
+  const { data: contacts } = useFetchContactsQuery();
+  const [deleteContact] = useDeleteContactMutation();
 
   const contactList = useMemo(
     () =>
@@ -21,13 +24,13 @@ const ContactList = () => {
 
   return (
     <UList>
-      {contactList.map(({ id, name, phone }) => (
+      {contactList?.map(({ id, name, phone }) => (
         <li key={id}>
           {`${name}: ${phone}`}
           <button
             type="submit"
             onClick={() => {
-              dispatch(deleteContactThunk(id));
+              deleteContact(id);
             }}
           >
             Delete

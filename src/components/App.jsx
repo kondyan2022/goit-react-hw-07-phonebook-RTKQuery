@@ -1,21 +1,20 @@
-import { useDispatch, useSelector } from 'react-redux';
 import ContactForm from './ContactForm/ContactForm';
 import ContactList from './ContactList/ContactList';
 import Filter from './Filter/Filter';
 
-import { useEffect } from 'react';
-import { fetchContactsThunk } from 'redux/contactSlice/thunk';
-import { getError, getIsLoading } from 'redux/selectors';
 import { Error } from './Heading/Heading.styled';
+import { useFetchContactsQuery } from 'redux/contactSliceRTK';
 
 export const App = () => {
-  const dispatch = useDispatch();
-  const isLoading = useSelector(getIsLoading);
-  const error = useSelector(getError);
+  // const dispatch = useDispatch();
+  // const isLoading = useSelector(getIsLoading);
+  // const error = useSelector(getError);
 
-  useEffect(() => {
-    dispatch(fetchContactsThunk());
-  }, [dispatch]);
+  const { isLoading, error } = useFetchContactsQuery();
+
+  // useEffect(() => {
+  //   dispatch(fetchContactsThunk());
+  // }, [dispatch]);
 
   return (
     <div>
